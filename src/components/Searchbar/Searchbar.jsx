@@ -1,45 +1,48 @@
 import React, { Component } from 'react';
-import { toast } from 'react-toastify';
-import { SearchbarHeader, SearchForm } from './Searchbar.styled';
+import { Icon } from '@iconify/react';
+import {
+  SearchbarContainer,
+  SearchForm,
+  SearchFormButton,
+  SearchFormButtonLabel,
+  SearchFormInput,
+} from './Searchbar.styled';
 
-export class Searchbar extends Component {
+class Searchbar extends Component {
   state = {
-    searchQuery: '',
+    query: '',
   };
 
-  handleQueryChange = event => {
-    this.setState({ searchQuery: event.currentTarget.value.toLowerCase() });
+  handleChange = (e) => {
+    this.setState({ query: e.target.value });
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
-    if (this.state.searchQuery.trim() === '') {
-      toast.error('Enter a keyword');
-      return;
-    }
-    this.props.onSubmit(this.state.searchQuery);
-    this.setState({ searchQuery: '' });
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.onSubmit(this.state.query);
+    this.setState({ query: '' });
   };
 
   render() {
     return (
-      <SearchbarHeader onSubmit={this.handleSubmit} className="searchbar">
-        <SearchForm className="form">
-          <button type="submit" className="button">
-            <span className="button-label">Search</span>
-          </button>
-
-          <input
-            onChange={this.handleQueryChange}
-            value={this.state.searchQuery}
-            className="input"
+      <SearchbarContainer>
+        <SearchForm onSubmit={this.handleSubmit}>
+          <SearchFormButton type="submit">
+            <Icon icon="mdi:magnify" width="28" height="28" />
+            <SearchFormButtonLabel>Search</SearchFormButtonLabel>
+          </SearchFormButton>
+          <SearchFormInput
             type="text"
+            value={this.state.query}
+            onChange={this.handleChange}
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
           />
         </SearchForm>
-      </SearchbarHeader>
+      </SearchbarContainer>
     );
   }
 }
+
+export default Searchbar;

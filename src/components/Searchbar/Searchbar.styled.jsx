@@ -1,12 +1,9 @@
 import styled from 'styled-components';
 
-/*
- * Стили компонента Searchbar
- */
-export const SearchbarHeader = styled.div`
+export const SearchbarContainer = styled.header`
+  position: sticky;
   top: 0;
   left: 0;
-  position: sticky;
   z-index: 1100;
   display: flex;
   justify-content: center;
@@ -22,9 +19,6 @@ export const SearchbarHeader = styled.div`
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 `;
 
-/*
- * Стили компонента SearchForm
- */
 export const SearchForm = styled.form`
   display: flex;
   align-items: center;
@@ -33,51 +27,48 @@ export const SearchForm = styled.form`
   background-color: #fff;
   border-radius: 3px;
   overflow: hidden;
+`;
 
-  button {
-    display: inline-block;
-    width: 48px;
-    height: 48px;
-    border: 0;
-    // background-image: url('https://image.flaticon.com/icons/svg/149/149852.svg');
-    background-size: 40%;
-    background-repeat: no-repeat;
-    background-position: center;
-    opacity: 0.6;
-    transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    outline: none;
-  }
+export const SearchFormButton = styled.button`
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  opacity: 0.6;
+  transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  outline: none;
 
-  button:hover {
+  &:hover {
     opacity: 1;
   }
+`;
 
-  button-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    clip-path: inset(50%);
-    border: 0;
-  }
+export const SearchFormButtonLabel = styled.span`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+  border: 0;
+`;
 
-  input {
-    display: inline-block;
-    width: 100%;
-    font: inherit;
-    font-size: 20px;
-    border: none;
-    outline: none;
-    padding-left: 4px;
-    padding-right: 4px;
-  }
+export const SearchFormInput = styled.input`
+  display: inline-block;
+  width: 100%;
+  font: inherit;
+  font-size: 20px;
+  border: none;
+  outline: none;
+  padding-left: 4px;
+  padding-right: 4px;
 
-  input::placeholder {
+  &::placeholder {
     font: inherit;
     font-size: 18px;
   }
 `;
+

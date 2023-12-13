@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import { ButonLoadMore } from './Button.styled';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { ButtonLoadMore } from './Button.styled';
 
-export class Button extends Component {
-  render() {
-    return (
-      <ButonLoadMore
-        onClick={this.props.onFindMore}
-        type="button"
-      >
-        Load more
-      </ButonLoadMore>
-    );
-  }
-}
+const Button = ({ onClick }) => (
+  <ButtonLoadMore type="button" className="load-more" onClick={onClick}>
+    Load more
+  </ButtonLoadMore>
+);
+
+Button.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
+
+export default Button;
+
