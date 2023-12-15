@@ -4,25 +4,12 @@ import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
 import { Loader } from './Loader/Loader';
 import Modal from './Modal/Modal';
-import { fetchImages } from './Api/fetchGalleryImg';
-import styled from 'styled-components';
-
-
-const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 16px;
-  padding-bottom: 24px;
-`;
+import { fetchImages } from '../Api/FetchGalleryImg';
+import { Wrapper } from './App.styled';
 
 const perPage = 12;
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.myApp = React.createRef();
-  }
-
   state = {
     images: [],
     query: '',
@@ -57,39 +44,35 @@ class App extends Component {
     this.setState({ showModal: false, selectedImage: '' });
   };
 
-  componentDidUpdate(prevProp, prevState) {
-    if (prevState.query !== this.state.query || prevState.page !== this.state.page) {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.page !== prevState.page || this.state.query !== prevState.query) {
       this.setState({ isLoading: true });
       fetchImages(this.state.query, this.state.page, perPage)
-        .then((responce) => {
-          if (responce.data.totalHits === 0) return alert('No data for this search');
-          this.setState((prev) => {
-            return {
-              images: [...prev.images, ...responce.data.hits],
-              totalCount: responce.data.totalHits,
-              isLoading: false,
-            };
-          });
+        .then((response) => {
+          if (response.data.totalHits === 0) return alert('No data for this search');
+          this.setState((prev) => ({
+            images: [...prev.images, ...response.data.hits],
+            totalCount: response.data.totalHits,
+            isLoading: false,
+          }));
         })
         .catch((error) => {
           console.error('Error fetching images:', error);
         });
     }
-    window.scrollTo(0, this.myApp.current.scrollHeight);
   }
 
   render() {
     const { images, isLoading, showModal, selectedImage } = this.state;
+    const shouldShowLoadMore = this.state.totalCount > perPage && this.state.page * perPage < this.state.totalCount;
 
     return (
-      <Wrapper ref={this.myApp}>
+      <Wrapper>
         <Searchbar onSubmit={this.handleSearchSubmit} />
         <ImageGallery images={images} onImageClick={this.handleImageClick} />
         {isLoading && <Loader />}
-        {this.state.totalCount > perPage && this.state.page * perPage < this.state.totalCount && !isLoading && (
-          <Button onClick={this.handleLoadMore} />
-        )}
-        {showModal && <Modal isOpen={showModal} image={selectedImage} onClose={this.handleCloseModal} />}
+        {shouldShowLoadMore && <Button onClick={this.handleLoadMore} />}
+        {showModal && <Modal largeImageURL={selectedImage} onClose={this.handleCloseModal} />}
       </Wrapper>
     );
   }
